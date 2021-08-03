@@ -43,7 +43,7 @@ namespace sem.ev.unitTests.services.testData
 
             yield return new object[]
             {
-                new double[] { 1,2,2,1, 7 },
+                new double[] { 1,2,2,1,7.5 },
                 3,
                 new (string bucket, int entries)[]
                 {
@@ -76,6 +76,18 @@ namespace sem.ev.unitTests.services.testData
                     ("-3 to <0", 1),
                     ("0 to <3", 1),
                     ("3 to <7", 1),
+                }
+            };
+
+            yield return new object[]
+            {
+                new double[] { -1,-2,-2,-1,-7.5 },
+                3,
+                new (string bucket, int entries)[]
+                {
+                    ("-8 to <-6", 1),
+                    ("-6 to <-4", 0),
+                    ("-4 to <0", 4),
                 }
             };
 

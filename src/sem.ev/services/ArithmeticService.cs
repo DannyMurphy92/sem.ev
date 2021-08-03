@@ -59,8 +59,9 @@ namespace sem.ev.services
                 throw new ArgumentException("Number of buckets must be at least 1");
 
             }
-            var bucketMax = input.OrderByDescending(input => input).First() + 1;
-            var bucketMin = input.OrderBy(input => input).First();
+
+            var bucketMax = input.Max() % 1 == 0 ? input.Max() + 1 : Math.Ceiling(input.Max());
+            var bucketMin = Math.Floor(input.Min());
 
             var totalNumberOfInputs = input.Length;
 
@@ -88,7 +89,7 @@ namespace sem.ev.services
 
                 if(bucketIx == numberOfBuckets - 1 && upperLimit < bucketMax)
                 {
-                    upperLimit = bucketMax;
+                    upperLimit = bucketMax; // If its a fraction
                 }
 
                 // Could be simplified using LINQ.Count(x => x..., wasn't sure if it was allowed
