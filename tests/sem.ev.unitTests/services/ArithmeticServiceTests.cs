@@ -47,8 +47,6 @@ namespace sem.ev.unitTests.services
             Assert.Equal(expectedDeviation, sut.StandardDeviation(input));
         }
 
-
-
         [Theory]
         [ClassData(typeof(BucketsTestData))]
         public void Buckets_GivenArrayOfData_SortsIntoBucketsCorrectly(double[] input, int buckets, (string bucket, int entries)[] expectedResponse )
@@ -58,6 +56,24 @@ namespace sem.ev.unitTests.services
             var result = sut.BucketData(input, buckets);
 
             result.Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [Fact]
+        public void Buckets_GivenEmptyArrayOfData_ThrowsException()
+        {
+            var sut = new ArithmeticService();
+
+            var ex = Assert.Throws<ArgumentException>(() => sut.BucketData(new double[] { }, 5).ToList());
+            Assert.Equal("Input data must contain at least 1 entry", ex.Message);
+        }
+
+        [Fact]
+        public void Buckets_GivenZeroBuckets_ThrowsException()
+        {
+            var sut = new ArithmeticService();
+
+            var ex = Assert.Throws<ArgumentException>(() => sut.BucketData(new double[] { 1,2,3}, 0).ToList());
+            Assert.Equal("Number of buckets must be at least 1", ex.Message);
         }
     }
 }

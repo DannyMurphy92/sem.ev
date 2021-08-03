@@ -48,12 +48,21 @@ namespace sem.ev.services
         }
 
 
-        public IEnumerable<(string bucket, int entries)> BucketData(IList<double> input, int numberOfBuckets)
+        public IEnumerable<(string bucket, int entries)> BucketData(double[] input, int numberOfBuckets)
         {
+            if (input.Length == 0)
+            {
+                throw new ArgumentException("Input data must contain at least 1 entry");
+            }
+            if(numberOfBuckets == 0)
+            {
+                throw new ArgumentException("Number of buckets must be at least 1");
+
+            }
             var bucketMax = input.OrderByDescending(input => input).First() + 1;
             var bucketMin = input.OrderBy(input => input).First();
 
-            var totalNumberOfInputs = input.Count();
+            var totalNumberOfInputs = input.Length;
 
             if (bucketMax < 0)
             {
@@ -67,17 +76,17 @@ namespace sem.ev.services
 
             var bucketSize = (int)(bucketMax - bucketMin) / numberOfBuckets;
 
+           if(bucketSize == 0)
+            {
+                bucketSize = 1;
+            }
+
             var lowerLimit = bucketMin;
             for (int bucketIx = 0; bucketIx < numberOfBuckets; bucketIx++)
             {
                 var upperLimit = bucketMin + (bucketSize * (bucketIx+1));
 
-                if(lowerLimit == upperLimit)
-                {
-                    upperLimit++;
-                }
-
-                if(bucketIx == numberOfBuckets - 1)
+                if(bucketIx == numberOfBuckets - 1 && upperLimit < bucketMax)
                 {
                     upperLimit = bucketMax;
                 }
