@@ -1,4 +1,5 @@
-﻿using sem.ev.services;
+﻿using FluentAssertions;
+using sem.ev.services;
 using sem.ev.unitTests.services.testData;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,19 @@ namespace sem.ev.unitTests.services
             var sut = new ArithmeticService();
 
             Assert.Equal(expectedDeviation, sut.StandardDeviation(input));
+        }
+
+
+
+        [Theory]
+        [ClassData(typeof(BucketsTestData))]
+        public void Buckets_GivenArrayOfData_SortsIntoBucketsCorrectly(double[] input, int buckets, (string bucket, int entries)[] expectedResponse )
+        {
+            var sut = new ArithmeticService();
+
+            var result = sut.BucketData(input, buckets);
+
+            result.Should().BeEquivalentTo(expectedResponse);
         }
     }
 }

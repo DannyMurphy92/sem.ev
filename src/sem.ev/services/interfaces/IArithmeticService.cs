@@ -10,5 +10,6 @@ namespace sem.ev.services.interfaces
     {
         double Mean(double[] input);
         double StandardDeviation(double[] input);
+        IEnumerable<(string bucket, int entries)> BucketData(IList<double> input, int numberOfBuckets);
     }
 }
