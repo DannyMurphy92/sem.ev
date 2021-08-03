@@ -1,5 +1,7 @@
 # Arithmetic application
 
+Console application that will calculate the mean, standard deviation, and bucket arrays of numbers
+
 ## Building the application
 
 Run the following in your command line at the root of the solution

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace sem.ev
 {
@@ -12,7 +13,9 @@ namespace sem.ev
             var arithmeticSvc = new ArithmeticService();
             var numbers = new List<double>();
 
-            using (var reader = new StreamReader(@".\data\SampleData.xls"))
+            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            using (var reader = new StreamReader($"{assemblyPath}\\data\\SampleData.xls"))
             {
                 while (!reader.EndOfStream)
                 {
@@ -36,6 +39,9 @@ namespace sem.ev
             {
                 Console.WriteLine($"{resp.bucket}: {resp.entries}");
             }
+
+
+            Console.WriteLine($"Press any key to exit");
 
             Console.ReadLine();
         }
