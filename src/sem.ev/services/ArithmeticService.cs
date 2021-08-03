@@ -25,5 +25,26 @@ namespace sem.ev.services
 
             return 0;
         }
+
+        public double StandardDeviation(double[] input)
+        {
+            var mean = Mean(input);
+
+            if(input.Length > 0)
+            {
+                var numerator = (double)0;
+                for(int i = 0; i < input.Length; i++)
+                {
+                    var distToMean = input[i] - mean;
+                    numerator += distToMean * distToMean;
+                }
+
+                var sqrtInput = numerator / input.Length;
+
+                return Math.Sqrt(sqrtInput);
+            }
+
+            return mean;
+        }
     }
 }

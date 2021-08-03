@@ -27,5 +27,23 @@ namespace sem.ev.unitTests.services
 
             Assert.Equal(expectedMean, sut.Mean(input));
         }
+
+        [Fact]
+        public void StdDev_GivenEmptyArray_Returns0()
+        {
+
+            var sut = new ArithmeticService();
+
+            Assert.Equal(0, sut.StandardDeviation(new double[] { }));
+        }
+
+        [Theory]
+        [ClassData(typeof(StdDevTestData))]
+        public void StdDev_GivenArrayOfData_CalculatesStdDevCorrectly(double[] input, double expectedDeviation)
+        {
+            var sut = new ArithmeticService();
+
+            Assert.Equal(expectedDeviation, sut.StandardDeviation(input));
+        }
     }
 }

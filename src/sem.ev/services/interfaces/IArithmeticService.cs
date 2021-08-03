@@ -9,5 +9,6 @@ namespace sem.ev.services.interfaces
     public interface IArithmeticService
     {
         double Mean(double[] input);
+        double StandardDeviation(double[] input);
     }
 }
