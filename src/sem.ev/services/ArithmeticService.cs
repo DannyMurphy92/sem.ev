@@ -57,54 +57,60 @@ namespace sem.ev.services
             if(numberOfBuckets == 0)
             {
                 throw new ArgumentException("Number of buckets must be at least 1");
-
             }
 
-            var bucketMax = input.Max() % 1 == 0 ? input.Max() + 1 : Math.Ceiling(input.Max());
-            var bucketMin = Math.Floor(input.Min());
-
-            var totalNumberOfInputs = input.Length;
-
-            if (bucketMax < 0)
-            {
-                bucketMax = 0;
-            }
-
-            if (bucketMin > 0)
-            {
-                bucketMin = 0;
-            }
-
-            var bucketSize = (int)(bucketMax - bucketMin) / numberOfBuckets;
-
-           if(bucketSize == 0)
-            {
-                bucketSize = 1;
-            }
+            var (bucketMin, bucketMax, bucketSize) = GetBucketValues(input, numberOfBuckets);
 
             var lowerLimit = bucketMin;
+
             for (int bucketIx = 0; bucketIx < numberOfBuckets; bucketIx++)
             {
                 var upperLimit = bucketMin + (bucketSize * (bucketIx+1));
 
                 if(bucketIx == numberOfBuckets - 1 && upperLimit < bucketMax)
                 {
-                    upperLimit = bucketMax; // If its a fraction
+                    upperLimit = bucketMax; // If its a decimal
                 }
 
                 // Could be simplified using LINQ.Count(x => x..., wasn't sure if it was allowed
                 var entries = 0;
-                for (int inputIx = 0; inputIx < totalNumberOfInputs; inputIx++)
+
+                Array.ForEach(input, value =>
                 {
-                    if (input[inputIx] >= lowerLimit && input[inputIx] < upperLimit)
+                    if (value >= lowerLimit && value < upperLimit)
                     {
                         entries++;
                     }
-                }
+                });
 
                 yield return (bucket: $"{lowerLimit} to <{upperLimit}", entries);
                 lowerLimit = upperLimit;
             }
+        }
+
+        private (double min, double max, int size) GetBucketValues(double[] input, int numberOfBuckets)
+        {
+            var max = input.Max() % 1 == 0 ? input.Max() + 1 : Math.Ceiling(input.Max());
+            var min = Math.Floor(input.Min());
+
+            if (max < 0)
+            {
+                max = 0;
+            }
+
+            if (min > 0)
+            {
+                min = 0;
+            }
+
+            var size = (int)(max - min) / numberOfBuckets;
+
+            if (size == 0)
+            {
+                size = 1;
+            }
+
+            return (min, max, size);
         }
     }
 }
